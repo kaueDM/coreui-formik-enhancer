@@ -1,0 +1,40 @@
+{
+  "name": "coreui-formik-enhancer",
+  "version": "0.0.1",
+  "description": "CoreUI/Formik form builder",
+  "main": "build/index.js",
+  "peerDependencies": {
+    "formik": "^1.4.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-text-mask": "^5.4.3",
+    "reactstrap": "^6.5.0",
+    "yup": "^0.26.10"
+  },
+  "dependencies": {
+    "formik": "^1.4.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-text-mask": "^5.4.3",
+    "reactstrap": "^6.5.0",
+    "webpack": "^2.6.1",
+    "yup": "^0.26.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --watch",
+    "build": "webpack"
+  },
+  "author": {
+    "name": "Kauê da Maia",
+    "email": "kaue@ruptiva.com"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.5.1"
+  }
+}
