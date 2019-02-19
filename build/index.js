@@ -4594,7 +4594,8 @@ var _renderTextField = function _renderTextField(key, field, formikProps) {
       mask = field.mask,
       disabled = field.disabled,
       placeholder = field.placeholder,
-      size = field.size;
+      size = field.size,
+      onChangeCallback = field.onChangeCallback;
 
 
   return _react2.default.createElement(
@@ -4620,7 +4621,8 @@ var _renderTextField = function _renderTextField(key, field, formikProps) {
         },
         placeholder: placeholder || '',
         onChange: function onChange(e) {
-          return setFieldValue(name, e.target.value);
+          onChangeCallback(e.target.value);
+          setFieldValue(name, e.target.value);
         },
         render: function render(ref, props) {
           return _react2.default.createElement(_reactstrap.Input, _extends({
@@ -4640,15 +4642,16 @@ var _renderTextField = function _renderTextField(key, field, formikProps) {
 };
 
 var _renderSelectField = function _renderSelectField(key, field, formikProps) {
-  var name = field.name,
-      label = field.label,
-      disabled = field.disabled,
-      options = field.options,
-      size = field.size;
   var values = formikProps.values,
       touched = formikProps.touched,
       errors = formikProps.errors,
       setFieldValue = formikProps.setFieldValue;
+  var name = field.name,
+      label = field.label,
+      disabled = field.disabled,
+      options = field.options,
+      size = field.size,
+      onChangeCallback = field.onChangeCallback;
 
 
   return _react2.default.createElement(
@@ -4671,7 +4674,8 @@ var _renderSelectField = function _renderSelectField(key, field, formikProps) {
           value: values[name],
           invalid: !!(touched[name] && errors[name]),
           onChange: function onChange(e) {
-            return setFieldValue(name, e.target.value);
+            onChangeCallback(e.target.value);
+            setFieldValue(name, e.target.value);
           }
         },
         _react2.default.createElement(
@@ -9092,7 +9096,7 @@ module.exports = words;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.7
+ * @version 1.14.6
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -9660,11 +9664,7 @@ function isFixed(element) {
   if (getStyleComputedProperty(element, 'position') === 'fixed') {
     return true;
   }
-  var parentNode = getParentNode(element);
-  if (!parentNode) {
-    return false;
-  }
-  return isFixed(parentNode);
+  return isFixed(getParentNode(element));
 }
 
 /**
@@ -10320,23 +10320,18 @@ function getRoundedOffsets(data, shouldRound) {
   var _data$offsets = data.offsets,
       popper = _data$offsets.popper,
       reference = _data$offsets.reference;
-  var round = Math.round,
-      floor = Math.floor;
 
+
+  var isVertical = ['left', 'right'].indexOf(data.placement) !== -1;
+  var isVariation = data.placement.indexOf('-') !== -1;
+  var sameWidthOddness = reference.width % 2 === popper.width % 2;
+  var bothOddWidth = reference.width % 2 === 1 && popper.width % 2 === 1;
   var noRound = function noRound(v) {
     return v;
   };
 
-  var referenceWidth = round(reference.width);
-  var popperWidth = round(popper.width);
-
-  var isVertical = ['left', 'right'].indexOf(data.placement) !== -1;
-  var isVariation = data.placement.indexOf('-') !== -1;
-  var sameWidthParity = referenceWidth % 2 === popperWidth % 2;
-  var bothOddWidth = referenceWidth % 2 === 1 && popperWidth % 2 === 1;
-
-  var horizontalToInteger = !shouldRound ? noRound : isVertical || isVariation || sameWidthParity ? round : floor;
-  var verticalToInteger = !shouldRound ? noRound : round;
+  var horizontalToInteger = !shouldRound ? noRound : isVertical || isVariation || sameWidthOddness ? Math.round : Math.floor;
+  var verticalToInteger = !shouldRound ? noRound : Math.round;
 
   return {
     left: horizontalToInteger(bothOddWidth && !isVariation && shouldRound ? popper.left - 1 : popper.left),

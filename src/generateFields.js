@@ -29,7 +29,7 @@ const _renderField = (key, field, formikProps) => {
 
 const _renderTextField = (key, field, formikProps) => {
   const { touched, errors, values, setFieldValue, handleBlur } = formikProps
-  const { name, label, type, mask, disabled, placeholder, size } = field
+  const { name, label, type, mask, disabled, placeholder, size, onChangeCallback } = field
 
   return (
     <Col {..._setFieldSize(size)} key={key}>
@@ -44,7 +44,10 @@ const _renderTextField = (key, field, formikProps) => {
           onBlur={handleBlur(name)}
           mask={mask || (_ => false)}
           placeholder={placeholder || ''}
-          onChange={e => setFieldValue(name, e.target.value)}
+          onChange={e => {
+            onChangeCallback(e.target.value)
+            setFieldValue(name, e.target.value)
+          }}
           render={(ref, props) => (
             <Input
               innerRef={ref}
@@ -65,8 +68,8 @@ const _renderTextField = (key, field, formikProps) => {
 }
 
 const _renderSelectField = (key, field, formikProps) => {
-  const { name, label, disabled, options, size } = field
   const { values, touched, errors, setFieldValue } = formikProps
+  const { name, label, disabled, options, size, onChangeCallback } = field
 
   return (
     <Col {..._setFieldSize(size)} key={key}>
@@ -78,7 +81,10 @@ const _renderSelectField = (key, field, formikProps) => {
           disabled={disabled}
           value={values[name]}
           invalid={!!(touched[name] && errors[name])}
-          onChange={e => setFieldValue(name, e.target.value)}
+          onChange={e => {
+            onChangeCallback(e.target.value)
+            setFieldValue(name, e.target.value)
+          }}
         >
           <option>Selecione</option>
           {options.map((option, index) => (
